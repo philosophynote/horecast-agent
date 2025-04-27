@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { RaceForm, RaceFormData } from "./components/RaceForm";
+import { RaceResult } from "./components/RaceResult";
 
 export default function Home() {
   // レース情報フォーム送信時のハンドラ
@@ -20,6 +21,7 @@ export default function Home() {
           priority
         />
         <RaceForm onSubmit={handleRaceFormSubmit} />
+        <RaceResult />
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
         <a
