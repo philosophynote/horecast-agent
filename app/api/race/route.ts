@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { RaceRequest, RaceResponse } from "./types";
+import { RaceRequest } from "./types";
+import { mastra } from "@/mastra";
 
 /**
  * POST /api/race
@@ -15,42 +16,13 @@ export async function POST(req: Request) {
   }
   const reqData: RaceRequest = body;
 
-  // TODO: Mastraエージェントで情報取得
-  // ここではダミーデータを返す
-  const dummy: RaceResponse = {
-    race: {
-      name: "第70回 安田記念(G1)",
-      date: "2024-06-02T15:40:00+09:00",
-      place: reqData.place,
-      number: reqData.number,
-      surface: "芝",
-      distance: 1600,
-      horses: [
-        {
-          waku: 1,
-          uma: 1,
-          name: "ソングライン",
-          sex: "牝",
-          age: 5,
-          jockey: "戸崎圭太",
-          weight: 56.0,
-        },
-        // ...他の馬（省略）
-      ],
-    },
-    predictions: [
-      {
-        source: "netkeiba.com",
-        url: "https://www.netkeiba.com/",
-        content: "◎ソングライン ○セリフォス ▲シュネルマイスター",
-      },
-      {
-        source: "スポーツ新聞A",
-        url: "https://example.com/",
-        content: "◎シュネルマイスター ○ソングライン",
-      },
-    ],
-  };
+  // レース情報をプロンプトとして整形
+  const prompt = `開催日: ${reqData.date}\n競馬場: ${reqData.place}\nレース番号: ${reqData.number}\nこのレースの出馬表とWEB上の予想をまとめてください。`;
 
-  return NextResponse.json(dummy);
+  // Mastraエージェントで情報取得
+  const agent = mastra.getAgent("raceAgent");
+  const result = await agent.generate(prompt);
+
+  // そのまま返す（AIの出力をフロントでパースする前提）
+  return NextResponse.json({ result: result.text });
 } 
