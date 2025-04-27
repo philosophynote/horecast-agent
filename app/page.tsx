@@ -1,12 +1,37 @@
+"use client"
+
 import Image from "next/image";
+import { useState } from "react";
 import { RaceForm, RaceFormData } from "./components/RaceForm";
 import { RaceResult } from "./components/RaceResult";
+import type { RaceResponse } from "./api/race/types";
 
 export default function Home() {
+  const [result, setResult] = useState<RaceResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   // レース情報フォーム送信時のハンドラ
-  const handleRaceFormSubmit = (data: RaceFormData) => {
-    // TODO: API呼び出しでレース情報を送信
-    console.log("送信データ", data);
+  const handleRaceFormSubmit = async (data: RaceFormData) => {
+    setLoading(true);
+    setError(null);
+    setResult(null);
+    try {
+      const res = await fetch("/api/race", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) {
+        throw new Error("APIリクエストに失敗しました");
+      }
+      const json = await res.json();
+      setResult(json);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -21,7 +46,9 @@ export default function Home() {
           priority
         />
         <RaceForm onSubmit={handleRaceFormSubmit} />
-        <RaceResult />
+        {loading && <div className="mt-4 text-blue-600">検索中...</div>}
+        {error && <div className="mt-4 text-red-600">{error}</div>}
+        {result && <RaceResult data={result} />}
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
         <a

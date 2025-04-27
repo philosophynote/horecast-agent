@@ -1,6 +1,10 @@
 "use client"
 
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 
 /**
  * レース情報入力フォームのデータ型
@@ -16,68 +20,81 @@ export type RaceFormData = {
  * - 開催日、競馬場、レース番号を入力
  */
 export function RaceForm({ onSubmit }: { onSubmit: (data: RaceFormData) => void }) {
-  // 入力値の状態管理
-  const [form, setForm] = useState<RaceFormData>({
-    date: "",
-    place: "東京",
-    number: 1,
+  const form = useForm<RaceFormData>({
+    defaultValues: {
+      date: "",
+      place: "東京",
+      number: 1,
+    },
+    mode: "onBlur",
   });
 
-  // 入力変更ハンドラ
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({
-      ...prev,
-      [name]: name === "number" ? Number(value) : value,
-    }));
-  };
-
-  // 送信ハンドラ
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit(form);
+  const handleSubmit = (data: RaceFormData) => {
+    onSubmit(data);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full max-w-md p-4 border rounded bg-white shadow">
-      <label className="flex flex-col gap-1">
-        開催日
-        <input
-          type="date"
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col gap-4 w-full max-w-md p-4 border rounded bg-white shadow">
+        <FormField
           name="date"
-          value={form.date}
-          onChange={handleChange}
-          required
-          className="border rounded px-2 py-1"
+          rules={{ required: "開催日を入力してください" }}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>開催日</FormLabel>
+              <FormControl>
+                <Input type="date" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </label>
-      <label className="flex flex-col gap-1">
-        競馬場
-        <select
+        <FormField
           name="place"
-          value={form.place}
-          onChange={handleChange}
-          className="border rounded px-2 py-1"
-        >
-          <option value="東京">東京</option>
-          <option value="京都">京都</option>
-          <option value="福島">福島</option>
-        </select>
-      </label>
-      <label className="flex flex-col gap-1">
-        レース番号
-        <select
+          rules={{ required: "競馬場を選択してください" }}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>競馬場</FormLabel>
+              <FormControl>
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="競馬場を選択" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="東京">東京</SelectItem>
+                    <SelectItem value="京都">京都</SelectItem>
+                    <SelectItem value="福島">福島</SelectItem>
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
           name="number"
-          value={form.number}
-          onChange={handleChange}
-          className="border rounded px-2 py-1"
-        >
-          {Array.from({ length: 12 }, (_, i) => (
-            <option key={i + 1} value={i + 1}>{i + 1}</option>
-          ))}
-        </select>
-      </label>
-      <button type="submit" className="bg-blue-600 text-white rounded px-4 py-2 hover:bg-blue-700 transition">検索</button>
-    </form>
+          rules={{ required: "レース番号を選択してください" }}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>レース番号</FormLabel>
+              <FormControl>
+                <Select value={String(field.value)} onValueChange={v => field.onChange(Number(v))}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="レース番号を選択" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Array.from({ length: 12 }, (_, i) => (
+                      <SelectItem key={i + 1} value={String(i + 1)}>{i + 1}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit" className="w-full">検索</Button>
+      </form>
+    </Form>
   );
 } 
