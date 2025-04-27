@@ -18,7 +18,10 @@ export const firecrawlTool = createTool({
     }))
   }),
   execute: async (input: any) => {
-    const query = input.query;
+    console.log(input);
+    console.log(input["context"]);
+    console.log(input["context"]["query"]);
+    const query = input["context"]["query"];
     if (!query) throw new Error("検索クエリが指定されていません");
     // FireCrawl MCPサーバーのREST APIを呼び出す
     const res = await fetch("http://localhost:4111/api/tools/firecrawl/search", {

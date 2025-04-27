@@ -1,7 +1,10 @@
 import { Mastra } from '@mastra/core';
-import { raceAgent } from './agents/raceAgent';
+import { createRaceAgent } from './agents/raceAgent';
 
-export const mastra = new Mastra({
-  agents: { raceAgent },
-});
+export const mastraPromise = (async () => {
+  const raceAgent = await createRaceAgent();
+  return new Mastra({
+    agents: { raceAgent },
+  });
+})();
         

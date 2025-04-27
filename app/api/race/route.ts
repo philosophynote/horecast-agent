@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { RaceRequest } from "./types";
-import { mastra } from "@/mastra";
+import { mastraPromise } from "@/mastra";
 
 /**
  * POST /api/race
@@ -20,6 +20,7 @@ export async function POST(req: Request) {
   const prompt = `開催日: ${reqData.date}\n競馬場: ${reqData.place}\nレース番号: ${reqData.number}\nこのレースの出馬表とWEB上の予想をまとめてください。`;
 
   // Mastraエージェントで情報取得
+  const mastra = await mastraPromise;
   const agent = mastra.getAgent("raceAgent");
   const result = await agent.generate(prompt);
 
