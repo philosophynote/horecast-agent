@@ -3,8 +3,6 @@
 import Image from "next/image";
 import { useState } from "react";
 import { RaceForm, RaceFormData } from "./components/RaceForm";
-import { RaceResult } from "./components/RaceResult";
-import type { RaceResponse } from "./api/race/types";
 
 export default function Home() {
   const [result, setResult] = useState<string | null>(null);

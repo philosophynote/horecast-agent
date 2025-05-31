@@ -17,7 +17,7 @@ export const predictRaceAgent = new Agent({
 
     ▼入力パラメータ
       日付とレース名が渡されます
-      
+
     ▼収集ルール
       - 参照対象は 公式 JRA サイト、専門紙電子版（競馬ブック・日刊スポーツ等）、信頼できる tipster ブログ に限定する。
       - 各ソースから以下を取得する。
@@ -37,7 +37,7 @@ export const predictRaceAgent = new Agent({
       - 情報源一覧: 「ソース名: URL」を箇条書きで記載。
     
     ▼制約
-      - perplexity_reasonを使って検索する
+      - perplexity-askを使って検索する
       - JSON やコードブロックは 出力しない
       - 内部の思考過程は一切公開しない
       - 参照ソースが 3 件未満の場合は冒頭に「⚠情報源が不足しているため信頼度低下の可能性あり。」を追加する
