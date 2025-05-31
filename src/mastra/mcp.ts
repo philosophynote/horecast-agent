@@ -25,11 +25,15 @@ export const mcp =
        * → 例: await mcp.getTool("perplexity-ask#perplexity_ask")
        */
       "perplexity-ask": {
-        command: "npx",
+        command: "docker",
         args: [
-          "-y",
-          "server-perplexity-ask",
-        ],
+            "run",
+            "-i",
+            "--rm",
+            "-e",
+            "PERPLEXITY_API_KEY",
+            "mcp/perplexity-ask"
+          ],
         env: {
           PERPLEXITY_API_KEY: process.env.PERPLEXITY_API_KEY ?? "",
         },

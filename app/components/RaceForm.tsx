@@ -2,8 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 
 /**
@@ -11,20 +10,18 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "
  */
 export type RaceFormData = {
   date: string;
-  place: "東京" | "京都" | "福島";
-  number: number;
+  raceName: string;
 };
 
 /**
  * 競馬レース情報入力フォーム
- * - 開催日、競馬場、レース番号を入力
+ * - 開催日、レース名を入力
  */
 export function RaceForm({ onSubmit }: { onSubmit: (data: RaceFormData) => void }) {
   const form = useForm<RaceFormData>({
     defaultValues: {
       date: "",
-      place: "東京",
-      number: 1,
+      raceName: "",
     },
     mode: "onBlur",
   });
@@ -50,44 +47,13 @@ export function RaceForm({ onSubmit }: { onSubmit: (data: RaceFormData) => void 
           )}
         />
         <FormField
-          name="place"
-          rules={{ required: "競馬場を選択してください" }}
+          name="raceName"
+          rules={{ required: "レース名を入力してください" }}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>競馬場</FormLabel>
+              <FormLabel>レース名</FormLabel>
               <FormControl>
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="競馬場を選択" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="東京">東京</SelectItem>
-                    <SelectItem value="京都">京都</SelectItem>
-                    <SelectItem value="福島">福島</SelectItem>
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          name="number"
-          rules={{ required: "レース番号を選択してください" }}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>レース番号</FormLabel>
-              <FormControl>
-                <Select value={String(field.value)} onValueChange={v => field.onChange(Number(v))}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="レース番号を選択" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Array.from({ length: 12 }, (_, i) => (
-                      <SelectItem key={i + 1} value={String(i + 1)}>{i + 1}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Input type="text" placeholder="例: 皐月賞" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
