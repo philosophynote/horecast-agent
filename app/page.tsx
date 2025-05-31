@@ -7,7 +7,7 @@ import { RaceResult } from "./components/RaceResult";
 import type { RaceResponse } from "./api/race/types";
 
 export default function Home() {
-  const [result, setResult] = useState<RaceResponse | null>(null);
+  const [result, setResult] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -26,7 +26,7 @@ export default function Home() {
         throw new Error("APIリクエストに失敗しました");
       }
       const json = await res.json();
-      setResult(json);
+      setResult(json.text);
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
     } finally {
@@ -48,7 +48,12 @@ export default function Home() {
         <RaceForm onSubmit={handleRaceFormSubmit} />
         {loading && <div className="mt-4 text-blue-600">検索中...</div>}
         {error && <div className="mt-4 text-red-600">{error}</div>}
-        {result && <RaceResult data={result} />}
+        {result && (
+          <div className="mt-8 p-4 border rounded bg-white w-full max-w-2xl whitespace-pre-line">
+            <h3 className="font-bold mb-2">AI予想結果</h3>
+            <div>{result}</div>
+          </div>
+        )}
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
         <a
