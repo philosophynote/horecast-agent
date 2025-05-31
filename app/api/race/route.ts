@@ -24,28 +24,12 @@ export async function POST(req: Request) {
   const agent = mastra.getAgent("raceAgent");
   const result = await agent.generate(prompt);
 
-  // AIの出力をRaceResponse型としてパース・バリデーション
-  let raceResponse;
+  // Agentが出力した文章（raceText, predictionText）をそのまま返却
+  let response;
   try {
-    raceResponse = JSON.parse(result.text);
-    // RaceResponse型の簡易バリデーション
-    if (!raceResponse.race || !raceResponse.predictions) throw new Error();
-    const r = raceResponse.race;
-    if (
-      typeof r.name !== "string" ||
-      typeof r.date !== "string" ||
-      typeof r.place !== "string" ||
-      typeof r.number !== "number" ||
-      !["芝", "ダート", "障害"].includes(r.surface) ||
-      typeof r.distance !== "number" ||
-      !Array.isArray(r.horses) ||
-      !Array.isArray(raceResponse.predictions)
-    ) {
-      throw new Error();
-    }
+    response = JSON.parse(result.text);
   } catch (e) {
-    return NextResponse.json({ error: "AI出力のパースまたは型バリデーションに失敗しました" }, { status: 400 });
+    return NextResponse.json({ error: "AI出力のパースに失敗しました", raw: result.text }, { status: 400 });
   }
-
-  return NextResponse.json(raceResponse);
+  return NextResponse.json({ raceText: response.raceText, predictionText: response.predictionText });
 } 

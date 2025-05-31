@@ -39,7 +39,7 @@ export const predictWebSearchTool = createTool({
     // Perplexityのレスポンスから要約を抽出
     console.log(data);
     const summary = data.choices?.[0]?.message?.content || "";
-    console.log(summary);
+    console.log(`${query}の要約: ${summary}`);
     return {
       summary,
       raw: data

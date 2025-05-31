@@ -3,7 +3,6 @@ description:
 globs: 
 alwaysApply: true
 ---
-
 # Horecast Agent Rule
 
 ## 役割
@@ -29,17 +28,14 @@ alwaysApply: true
 - Tailwind
  - shadcn/ui
 - Node.js(v22)
- - パッケージマネージャーは`pnpm`(10.6.3)  
+ - パッケージマネージャーは`pnpm`
 
 ## 機能要件
 - フロントエンド
  - レース情報入力フォーム
   - 開催日
-  - 競馬場
-   - セレクトボックスで入力できるようにして下さい
-    - 項目は東京、京都、福島の３つです
-  - レース番号
-   - 1~12まで選べるようにして下さい 
+  - レース名
+
  - WEB検索結果表示
   - 出馬表
    - レース概要と出走する競走馬の一覧を表示してください 
@@ -70,7 +66,6 @@ horecast-agent/
 │   ├── mastra/                     
 │   │   ├── agents/
 │   │   ├── tools/
-│   │   ├── workflows/
 │   │   └── index.ts
 ---
 
