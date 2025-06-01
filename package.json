@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "dev:mastra": "mastra dev",
+    "dev:mastra": "mastra dev --dir src/mastra",
     "build": "next build",
+    "build:mastra": "mastra build --dir src/mastra",
     "start": "next start",
     "lint": "next lint"
   },
@@ -15,8 +16,9 @@
     "@mastra/client-js": "^0.1.22",
     "@mastra/core": "^0.10.1",
     "@mastra/deployer-cloudflare": "^0.10.1",
+    "@mastra/deployer-vercel": "^0.10.1",
     "@mastra/evals": "^0.10.1",
-    "@mastra/libsql": "^0.10.0",
+    "@mastra/loggers": "^0.10.0",
     "@mastra/mcp": "^0.10.1",
     "@mdx-js/react": "^3.1.0",
     "@radix-ui/react-form": "^0.1.7",
@@ -53,6 +55,7 @@
     "eslint-config-next": "15.3.1",
     "tailwindcss": "^4.1.8",
     "tw-animate-css": "^1.3.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "wrangler": "^4.18.0"
   }
 }
