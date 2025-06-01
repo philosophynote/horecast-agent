@@ -6,25 +6,6 @@ import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import rehypeReact from "rehype-react";
-import type { RaceInfo } from "../api/race/types";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-/**
- * Markdown/MDX文字列を安全にReact要素としてレンダリングするコンポーネント
- */
-function MarkdownRenderer({ content }: { content: string }) {
-  const render = useMemo(() => {
-    return unified()
-      .use(remarkParse)
-      .use(remarkGfm)
-      .use(remarkRehype)
-      .use(rehypeSanitize)
-      .use(rehypeReact, { createElement: React.createElement })
-      .processSync(content).result;
-  }, [content]);
-  return <>{render}</>;
-}
 
 /**
  * 出馬表・予想結果表示用コンポーネント
