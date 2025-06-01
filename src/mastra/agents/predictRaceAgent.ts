@@ -44,6 +44,9 @@ export const predictRaceAgent = new Agent({
     
   `,
   model: openai("o4-mini"),
-  tools: await mcp.getTools(),
+  tools: await mcp.getTools().catch((e) => {
+    console.error("MCPサーバー接続失敗, ツールをフォールバックします:", e);
+    return {};
+  }),
 });
 
